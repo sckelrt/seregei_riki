@@ -1,16 +1,60 @@
-﻿# Вы можете расположить сценарий своей игры в этом файле.
-
-# Определение персонажей игры.
+﻿# Определение персонажей игры.
 define ser = Character('Сёреженька', color="#c8ffc8", image ="serega")
 define dan = Character('Данила', color="#c8ffc8", image ="danil")
 define alex = Character('Алексей', color="#c8ffc8", image ="alex")
-define zah = Character('Захар', color="#c8ffc8", image ="zahar")
-define krs Character('Крыса', color="#c8ffc8", image ="rat")
+define zax = Character('Захар', color="#c8ffc8", image ="zahar")
+define krs = Character('Крыса', color="#c8ffc8", image ="rat")
+define le = Character('Леонид', color="#c8ffc8", image ="le")
+
+
+
+
+init python:
+    f = open('options.txt', 'r')
+    n = f.read()
+    f.close()
+    debugmenu = False
+    if n == "1":
+        debugmenu = True
+
+label debuging:
+
+menu:
+    "kaktus_evening":
+        jump kaktus_evening
+
+    "ley":
+        jump ley
+
+    "park":
+        jump park
+
+    "zahara":
+        jump zahara
+
+    "city":
+        jump city
+
+return
 
 # Игра начинается здесь:
 label start:
+
+    stop music fadeout 1.0
+
+
     camera:
         perspective True
+
+    if debugmenu:
+        menu:
+            "открыть debugmenu"
+
+            "да":
+                jump debuging
+
+            "нет":
+                "ок"
 
     play music "audio/dreame.ogg"
 
@@ -28,7 +72,7 @@ label start:
     show serega sleep 2:
         xalign 0.2 yalign 0.4 zpos 500
 
-    "Вам начинает позноваться сама квантовая физика"
+    "Вам начинает познаваться сама квантовая физика"
 
     show serega sleep 1:
         xalign 0.2 yalign 0.4 zpos 500
@@ -64,11 +108,11 @@ label start:
             jump otvetil
 
         "Я сплю":
-            jump neotvetil
+            jump sleep
 
     return
 
-label neotvetil:
+label sleep:
     "вы подумали, а зачем мне это всё надо? Просто посплю."
 
     dan "ээ сын фермера вставай!"
@@ -90,11 +134,12 @@ label neotvetil:
             jump otvetil
 
         "не я сплю":
-            jump end1
+            jump slep_end
 
     return
 
-label end1:
+# Первый конец если не встовать с кровати, бонально на да
+label slep_end:
 
     "Тебя больше ничего не тревожит"
 
@@ -111,7 +156,7 @@ label otvetil:
 
     dan "Братишка да я ж тебе клевый анекдот рассказал"
 
-    ser normal rev "ты полупридурок полу квадратный серо буро малинового цвета, я этот анекдот слышал 28 раз, ты бурят пусто мозговый, я с тобой джага джага и скибиди папа сделаю"
+    ser rev "ты полупридурок полу квадратный серо буро малинового цвета, я этот анекдот слышал 28 раз, ты бурят пусто мозговый, я с тобой джага джага и скибиди папа сделаю"
 
     dan angry "что ты сказал? я его придумывал 35 лет, а ты меня так оскорбляешь!"
 
@@ -206,6 +251,7 @@ label pletka:
     return
 
 #После вызова на миду ты сдался
+#Кфс потеря сыра тут
 label surrender:
 
     ser "ну ладно я сдаюсь"
@@ -278,9 +324,22 @@ label surrender:
 
     dan "ладно МЫ идём."
 
-    "как-то быстро, наверное каждый понедельник такое"
+    jump park
+
+    return
+
+
+#Герои пришли в парк
+label park:
 
     scene bg park
+
+    show danil:
+        left
+    show serega:
+        left
+
+    "как-то быстро, наверное каждый понедельник такое"
 
     dan "Ты уверен что они здесь?"
 
@@ -297,6 +356,15 @@ label surrender:
     dan "ТЫ ШО ОХУ..."
 
     "герои видят крысу))"
+
+    scene bg park_cheese
+
+    show danil:
+        left
+    show serega pletka:
+        left
+    show rat worry:
+        right
 
     ser "ВОТ ОНИ!"
 
@@ -332,6 +400,13 @@ return
 # В парке вы делаете ноускоп 360
 label nouskope:
 
+    show danil:
+        left
+    show serega pletka:
+        left
+    show rat pistol:
+        right
+
     ser "Ну давай моя прелесть, неподведи!"
 
     "Наш герой на столько закрутился, что даже не понял как попал в голову Данилочке ведь все знают, что пули притягивает больше в Данилочку."
@@ -343,7 +418,15 @@ label nouskope:
     "Нет у тебя нет выбора, иди по одому сюжету а остальное неправельно"
 return
 
-lable Danilin_vibor:
+#В парке идет погоня за крысами и данил выбирает
+label Danilin_vibor:
+
+    show danil:
+        left
+    show serega:
+        left
+    show rat pistol:
+        right
 
     ser "ЛАДНО, Я ДАМ ВЫБОР ТЕБЕ, ДАНИЛКА."
 
@@ -354,20 +437,21 @@ lable Danilin_vibor:
     "как по товему я дожен это сделать"
 
     menu:
-        ""
+        "Что выберет Данил"
 
         "предложить Факторио":
-            jump factorio
+            jump end_factorio
 
         "поесть":
             jump poest
 
         "Лёня????(у нас слишком мало нераскрытых персонажей)":
-            jump leny
+            jump ley
 
 return
 
-lable factorio:
+# конец с факторией
+label end_factorio:
 
     dan "Может пойдёмте в Фактори..."
 
@@ -379,7 +463,8 @@ lable factorio:
 
 return
 
-lable poest:
+#Проигрышь с поимкой мышью, парк еда
+label poest:
 
     dan "Надо перекусить."
 
@@ -393,11 +478,270 @@ lable poest:
 
 return
 
-lable leny:
+#Появление леонида
+label ley:
+
+    show danil:
+        left
+    show serega:
+        left
 
     ser "Ебать, чё за фортнайтер там?"
 
+    "Вы смотрите в верх"
+
+    le " s"
+
+    le "ПИЗДА КРЫСАМ!!!!"
+
+    scene bg bleak
+
+    dan "Ты откуда взялся?"
+
+    le "Да просто фортнайт проходить в 15670 раз наскучело, вот и вышел подышать свежим воздухом."
+
+    le "А чё вы тут с КРЫСОЙ делали?"
+
+    dan "Он у этого дебила сыр забрал, го с нами?"
+
+    le "Делать больше не чего, пох я с вами."
+
+    scene bg bleak
+
+    show danil:
+        left
+    show serega:
+        left
+    show len:
+        left
+
+    "Вот и подошла наша маленькая история к концу."
+
+    "Но не волнуйтесь, там где заканчивается маленькая история, начинается новая, большая и не забываемая история."
+
+    jump zahara
+
+    return
+
+# первая встреча с захаром в доме ипоявления дырки
+
+label zahara:
+
+    scene bg room_no_cheese
+
+    ser "Боже как я их урыл даже не вспотел, изи гг вп."
+
+    dan "Но это же был Лён..."
+
+    ser "ТАК, что мы будем делать дальше?"
+
+    dan "дро.. кхм кхм, не знаю."
+
+    le "Чё за имбейшая картина?"
+
+    ser "Мне она досталось от старого владельца дома."
+
+    dan "Какой дебил продал тебе дом?"
+
+    dan "И откуда у такого дебила есть деньги?"
+
+    ser "Охх...продал мне этот дом..."
+
+    scene bg room_smoke
+
+    pause
+
+    ser "Ёбаный рот, что теперь?"
+
+    ser "Кхме"
+
+    dan "Это что?"
+
+    "Почему они это не коментируют, тут дом вроде взорвался"
+
+    pause
+
+    scene bg room
+
+    show serega pletka:
+        left
+
+    show zaxar pistol:
+        right
+
+    show len:
+        left
+
+    show danil:
+        right
+
+    "Какойто-прямоугольник" "Опа, так вот как выглядит дом Сергея)."
+
+    dan "Захар???"
+
+    le "Сухар???"
+
+    ser "мухтар...Так погоди..."
+
+    ser "ЁБАНЫЙ ЗАХАР, ХУЛИ ТЫ ТУТ ЗАБЫЛ КУСОК ТЫ НЕОБРАЗОВАННОГО САХАРА."
+
+    zax "Да хз, пошли гулять?"
+
+    ser "КАКОЙ БЛЯТЬ ГУЛЯТЬ, ТЫ МНЕ МОЙ ДОМ СЛОМАЛ ТАНКИСТ ХУЕВ."
+
+    zax "Ну значит я пошёл, покеда)."
+
+    "Захар убегает из комнаты"
+
+    ser "КУДА БЛЯТЬ, ИДИ СЮДА ,ЁБАНЫЙ РЕВОЛЬВЕРЩИК."
+
+    "Гг убегает из комнаты"
+
+    "Игра пости как книга, вообрози что герои это реально делают"
+
+    dan "..."
+
+    dan "И чё нам делать?"
+
+    le "..."
+
+    le "Бля, какая ахуенная дырка!"
+
+    dan "Полностью солидарен с вами коллега!"
+
+    scene bg bleak
+
+    jump city
+
+    return
+
+label city:
+
+    show serega:
+        left
+
+    show zaxar pistol:
+        right
+
+    scene bg city
+
+    ser "Стой уёба!"
+
+    ser "Тебе всё равно не убежать!"
+
+    scene alleyway
+
+    ser "У ЧТО ПОПАЛСЯ ЗАСРАНЕЦ."
+
+    zax sad "Ой-йо, походу я влип."
+
+    menu:
+        "ЧТО МНЕ С НИМ СДЕЛАТЬ?"
+
+        "360 ноускоп":
+            jump nouskope360
+
+        "граната":
+            jump granate
+
 return
+
+#Серега в перелке с захаром, стельба ноускопом в данлиа
+
+label nouskope360:
+
+    show serega ver:
+        left
+
+    show zaxar pistol:
+        right
+
+    ser "Ну давай моя прелесть, не подведи!"
+
+    ser "Как будто я это уже..."
+
+    ser "Неважно!"
+
+    "Наше герой на столько закрутился, что даже не понял где стоял захар и выстрельнул."
+
+    ser "Бля, я ебал это говно, почему всем залетает а мне нет?"
+
+    scene v_serega_home
+
+    pause
+
+    scene bg room_hole
+
+    show len see:
+        left
+
+    show danil see:
+        right
+
+    dan "Знаешь, я тут поду..."
+
+    "В Данилочку попадает пуля"
+
+    dan "БЛЯя..."
+
+    dan ded "..."
+
+    "Данилочка умирает"
+
+    le "..."
+
+    le "О, холява!"
+
+    scene alleyway
+
+    show serega pletka:
+        left
+
+    show zaxar pistol:
+        right
+
+    ser "..."
+
+    ser "Бля, опять мис клик сорян."
+
+    "И вдруг Захар подумал что всё время он играл в кс и решил убить Серёжу по приколу."
+
+    "Ну а как мы знаем, если у захара револьвер, значит Серёжа не выживет что и произошло с нашем героем.гейм овер"
+
+return
+
+label granate:
+
+    show serega grenade:
+        left
+
+    show zaxar pistol:
+        right
+
+    ser "Ну всё, тебе не жить!"
+
+    "наш герой так уверенно кинул гранату, что он забыл мааааленькое недоразумение."
+
+    "Он не умел их кидать, поэтому кое-как докинул в середину."
+
+    scene alleyway_boom
+
+    zax sad "ЗАЧЕМ ТЫ ЭТО СДЕЛАЛ, ТУТ ЖЕ МОЯ ЯМ..."
+
+    scene alleyway_hole
+
+    ser "БЛЯЯЯЯяяяяяя....."
+
+    scene ser_zax_falling
+
+    pause
+
+    scene noend
+
+    pause
+
+return
+
 # выбр танка
 label tank:
 
@@ -452,7 +796,7 @@ label pudj:
 
     ser "Pudge тебя приголубит!"
 
-    dan normal"где мы? И кем ты стал? Хотя как я понял ты тот самый Малый триамбический икосаэдрический пудж"
+    dan"где мы? И кем ты стал? Хотя как я понял ты тот самый Малый триамбический икосаэдрический пудж"
 
     ser "За дело берется Мясник"
 
@@ -472,7 +816,10 @@ label pudj:
         "бороться с пуджом":
             jump dota_pudg
 
-        "а что за кнопочка приостновить игру?":
+        "а что за кнопочка приостановить игру?":
+
+            $ count_restart = 0
+
             jump dot_stop
 
     return
@@ -482,7 +829,7 @@ label dota_pudg:
 
     "вы пытаетесь бороться с пуджом, но он бросает в вас крюк и съедает вас конец"
 
-    "И уже понимая что это конец, вы вспоминаете, самое лучшее, кактусную вечеринку"
+    "И уже понимая что это конец, вы вспоминаете, самое лучшее, кактусовую вечеринку"
 
     jump kaktus_evening
 
@@ -522,9 +869,30 @@ label kaktus_evening:
     return
 
 label dot_stop:
+    $ count_restart +=1
 
-    "вы приостонвили игру… а dan-хорошо… а что теперь? Как возобновить игру?... уменя не чего не выходит!!!!!!"
+    "вы приостановить игру… а dan-хорошо… а что теперь? Как возобновить игру?... уменя не чего не выходит!!!!!!"
 
     "ХАХАХА"
+
+    if count_restart > 10:
+
+        "Что вы здесь ждете, выходите и начинайте игру занаво, здесь нет выхода"
+
+    if count_restart > 20:
+
+        "Здесь ничего нет, выходи в меню"
+
+    if count_restart > 30:
+
+        "Ладно, вот вам прова админа"
+
+        init python:
+
+            f = open('options.txt', 'w')
+            p = "1"
+            f.write(p)
+            f.close()
+
 
     jump dot_stop
