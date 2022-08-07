@@ -7,15 +7,9 @@ define krs = Character('Крыса', color="#c8ffc8", image ="rat")
 define le = Character('Леонид', color="#c8ffc8", image ="le")
 
 
-
-
 init python:
-    f = open('options.txt', 'r')
-    n = f.read()
-    f.close()
     debugmenu = False
-    if n == "1":
-        debugmenu = True
+
 
 label debuging:
 
@@ -42,6 +36,18 @@ label start:
 
     stop music fadeout 1.0
 
+    python:
+        debugmenu = False
+
+        try:
+            f = open('options.txt', 'r')
+            n = f.read()
+            f.close()
+        except:
+            n = "0"
+        if n == "1":
+            debugmenu = True
+
 
     camera:
         perspective True
@@ -56,7 +62,7 @@ label start:
             "нет":
                 "ок"
 
-    play music "audio/dreame.ogg"
+    play music "audio/music/dreame.ogg"
 
     "Вы впервые безмятежно спите"
 
@@ -79,7 +85,7 @@ label start:
 
     stop music fadeout 1.0
     "АНЕГДОТ"
-    play music "audio/bg holpd.ogg"
+    play music "audio/music/bg holpd.ogg"
     stop music fadeout 1.0
 
     scene bg room:
@@ -217,6 +223,8 @@ label pletka:
     show serega pletka:
         left
 
+    play sound "audio/effects/grag_pletka.ogg" noloop
+
     dan "Ты что сделал? ТЫ Ж САМ СКАЗАЛ БЕЗ ПЛЕТОК!!!!!!!!!"
 
     ser "ХЫХ я могу я делаю, а теперь получай ноускопом в хэд, хыхыхыххыхыхыхыхыхы"
@@ -278,6 +286,8 @@ label surrender:
 
     scene bg kfs
 
+    play music "audio/music/kfs.ogg"
+
     dan "Еееххх, как класно в кфс!"
 
     ser "Согласен, мне нравится."
@@ -323,6 +333,8 @@ label surrender:
     ser "ДА МЫ ИЛИ ТЫ ХОЧЕШЬ СТАТЬ СЫРОМ?"
 
     dan "ладно МЫ идём."
+
+    "как-то быстро, наверное каждый понедельник такое"
 
     jump park
 
@@ -409,7 +421,11 @@ label nouskope:
 
     ser "Ну давай моя прелесть, неподведи!"
 
+    play sound "audio/effects/grag_pletka.ogg" noloop
+
     "Наш герой на столько закрутился, что даже не понял как попал в голову Данилочке ведь все знают, что пули притягивает больше в Данилочку."
+
+    play sound "audio/effects/fire_awp.ogg" noloop
 
     dan "Бля мис клик сорян."
 
@@ -459,6 +475,10 @@ label end_factorio:
 
     scene bg end_factorio
 
+    play music "audio/music/endingNoFactorio.ogg"
+
+    pause
+
     "Конец"
 
 return
@@ -490,7 +510,9 @@ label ley:
 
     "Вы смотрите в верх"
 
-    le " s"
+    play sound "audio/effects/leonid_privet.ogg" noloop
+
+    le "s"
 
     le "ПИЗДА КРЫСАМ!!!!"
 
@@ -662,7 +684,11 @@ label nouskope360:
 
     ser "Неважно!"
 
+    play sound "audio/effects/grag_pletka.ogg" noloop
+
     "Наше герой на столько закрутился, что даже не понял где стоял захар и выстрельнул."
+
+    play sound "audio/effects/fire_awp.ogg" noloop
 
     ser "Бля, я ебал это говно, почему всем залетает а мне нет?"
 
@@ -887,7 +913,7 @@ label dot_stop:
 
         "Ладно, вот вам прова админа"
 
-        init python:
+        python:
 
             f = open('options.txt', 'w')
             p = "1"
